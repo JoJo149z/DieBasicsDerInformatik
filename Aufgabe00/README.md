@@ -124,7 +124,7 @@ Denn glaub mir: dein zukünftiges Ich wird fluchen, wenn du Messages wie „fix�
 > Git vergisst nichts. Aber du schon. Also committe früh, committe oft, und sei nett zu deinem zukünftigen Ich.
 
 ## Aufgabe 00.0
-Nun versuche einmal einfach den Inhalt von `egal.txt` anzupassen und diesen zu adden und zu committen.
+Nun versuche einmal einfach den Inhalt von `egal.txt` anzupassen und diesen zu **adden**, zu **committen** und zu **pushen**.
 <details>
 <summary> deine erste Fehlermeldung</summary>
 
