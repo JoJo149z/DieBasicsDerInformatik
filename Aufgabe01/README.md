@@ -76,6 +76,7 @@ Als du die Binärdatei nun also ausgeführt hast, ist im Groben sowas passiert:
 5. `main()` gibt 0 zurück → das ist so der Code für „Alles easy“.
 6. Das Betriebssystem nickt zufrieden und macht wieder sein Ding.
 
+
 ---
 ## Aufgabe 01.1
 Nun also zu deiner Aufgabe, wenn du alles gut verstanden hast, sollte die ein klax für dich sein.
