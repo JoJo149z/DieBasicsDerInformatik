@@ -161,8 +161,8 @@ Zur Erinnerung: Eine Primzahl ist nur durch **1** und **sich selbst** teilbar (z
 
 4. **Beispiel-Aufruf** (wie im Terminal):
       ```bash
-        clang -std=c11 -Wall -g ckurs_blatt02_aufgabe01.c -o ckurs_blatt02_aufgabe01
-        ./ckurs_blatt02_aufgabe01
+        gcc -std=c11 -Wall -g solution.c -o solution
+        ./solution
         Ist 105 eine Primzahl?
         Nein
       ```
