@@ -6,5 +6,6 @@ int main() {
     int hoehe = 3;
 
     // Hier Code einfügen
+
     return 0;
 }

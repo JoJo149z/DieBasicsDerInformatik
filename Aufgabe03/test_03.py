@@ -44,33 +44,38 @@ def clib(tmp_path_factory):
 
 @pytest.fixture(scope="module")
 def compile_c_program_factory(tmp_path_factory):
-    """
-    Returns a function that compiles solution.c with given width and height.
-    Usage:
-        exe_path = compile_c_program_factory(breite=10, hoehe=5)
-    """
     tmpdir = tmp_path_factory.mktemp("build")
     src = pathlib.Path(__file__).parent / "solution.c"
 
     def _compile(breite: int, hoehe: int) -> str:
-        # Read original C file
-        with open(src, "r") as f:
-            code = f.read()
+        code = src.read_text()
 
-        # Replace width and height dynamically using regex
-        code = re.sub(r"int\s+breite\s*=\s*\d+;", f"int breite = {breite};", code)
-        code = re.sub(r"int\s+hoehe\s*=\s*\d+;", f"int hoehe = {hoehe};", code)
+        code = re.sub(
+            r"int\s+breite\s*=\s*-?\d+\s*;",
+            f"int breite = {breite};",
+            code,
+        )
+        code = re.sub(
+            r"int\s+hoehe\s*=\s*-?\d+\s*;",
+            f"int hoehe = {hoehe};",
+            code,
+        )
 
-        # Write temp C file
         temp_c_file = tmpdir / f"solution_{breite}_{hoehe}.c"
         temp_c_file.write_text(code)
 
-        # Path for the executable
         exe_path = tmpdir / f"solution_exec_{breite}_{hoehe}"
 
-        # Compile
         compiler = get_compiler()
-        compile_cmd = [compiler, "-Wall", str(temp_c_file), "-o", str(exe_path)]
+        compile_cmd = [
+            compiler,
+            "-Wall",
+            "-Wextra",
+            str(temp_c_file),
+            "-o",
+            str(exe_path),
+        ]
+
         result = subprocess.run(compile_cmd, capture_output=True, text=True)
         if result.returncode != 0:
             pytest.fail(f"Compilation failed:\n{result.stderr}")
@@ -102,7 +107,7 @@ def test_negativ_size(compile_c_program_factory):
     exe_path = compile_c_program_factory(breite, hoehe)
     result = subprocess.run([exe_path], capture_output=True, text=True)
     assert result.returncode == 0
-    assert result.stdout in py_draw_rect(breite, hoehe)
+    assert py_draw_rect(breite, hoehe) in result.stdout
 
 def test_null_size(compile_c_program_factory):
     breite = 7
@@ -116,7 +121,7 @@ def test_null_size(compile_c_program_factory):
     exe_path = compile_c_program_factory(breite, hoehe)
     result = subprocess.run([exe_path], capture_output=True, text=True)
     assert result.returncode == 0
-    assert result.stdout in py_draw_rect(breite, hoehe)
+    assert py_draw_rect(breite, hoehe) in result.stdout
 
 def test_normal_size(compile_c_program_factory):
     breite = 3
@@ -124,4 +129,4 @@ def test_normal_size(compile_c_program_factory):
     exe_path = compile_c_program_factory(breite, hoehe)
     result = subprocess.run([exe_path], capture_output=True, text=True)
     assert result.returncode == 0
-    assert result.stdout in py_draw_rect(breite, hoehe)
+    assert py_draw_rect(breite, hoehe) in result.stdout
