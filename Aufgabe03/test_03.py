@@ -1,15 +1,10 @@
-import math
-import random
 import subprocess
 import shutil
 import pathlib
-import tempfile
 import re
 import pytest
 import ctypes
 import sys
-
-import os, select
 
 
 def get_compiler() -> str:
