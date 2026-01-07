@@ -7,23 +7,26 @@ int main() {
 
     int ih = hoehe;
     
+    for(int ib = breite+2; ib != 0; ib--){
+        printf("A");
+    }
+    printf("\n");
+        
     while(ih != 0){
         printf("A");
 
         for(int ib = breite; ib != 0; ib--){
-
-            if( ih == hoehe|| ih == 1){
-                printf("A");
-            }else{
-                printf("B");
-            }
-            
+            printf("B");
         }
         printf("A\n");
          
 
         ih = ih-1;        
     }
+    for(int ib = breite+2; ib != 0; ib--){
+        printf("A");
+    }
+    printf("\n");
 
     
 
