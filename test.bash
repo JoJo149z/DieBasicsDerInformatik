@@ -55,7 +55,7 @@ for dir in Aufgabe??/; do
 
     if [ "$run_tests" = true ]; then
         echo "🧪 Changes detected in $dir → running pytest"
-        pytest "$dir"
+        pytest "$dir" "-vv"
         status=$?
             if [ $status -ne 0 ]; then
                 echo "❌ Tests failed in $dir"
