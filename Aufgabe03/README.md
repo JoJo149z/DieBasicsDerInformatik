@@ -35,7 +35,7 @@ Wenn das läuft, hast du:
 * ein funktionierendes Setup
 * einen Fuß in der Tür
 
-Alles Weitere ist Luxus. 😉
+Alles Weitere ist Luxus.
 
 ---
 
@@ -320,7 +320,7 @@ Und denk dran:
 
 ---
 
-## 🎯 Ziel der Aufgabe
+## Ziel der Aufgabe
 
 Schreibe ein **C-Programm**, das ein **Rechteck aus ASCII-Zeichen** im Terminal ausgibt:
 
@@ -405,13 +405,13 @@ Bevor du Code schreibst, überlege dir die **Semantik**:
 * Wann beginnt und endet der Rand?
 * Wo stehen die `B`?
 
-💡 Tipp:
+Tipp:
 
 > Meistens läuft es auf **zwei verschachtelte Schleifen** hinaus: eine für die Zeilen, eine für die Spalten.
 
 ---
 
-## 🧪 Beispiel: Ändere nur die Variablen
+## Beispiel: Ändere nur die Variablen
 
 ```c
 int breite = 2;

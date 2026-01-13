@@ -56,7 +56,7 @@ Forget either one and your program will:
 
 ---
 
-### ❌ Bad Recursion (Don’t Do This)
+### Bad Recursion (Don’t Do This)
 
 ```c
 int recursion(int a) {
@@ -72,7 +72,7 @@ What happens?
 
 ---
 
-### ✅ Good Recursion (At Least It Stops)
+### Good Recursion (At Least It Stops)
 
 ```c
 int recursion(int a) {
@@ -135,7 +135,7 @@ On a 64-bit system:
 * `long` range: `−2^63` to `
 
 
-Guter Fang 🙂 — du hast recht, **der Bibliotheken-Teil fehlt noch**.
+Guter Fang — du hast recht, **der Bibliotheken-Teil fehlt noch**.
 Hier ist der **fehlende Abschnitt**, passend **im Beej-Guide-Stil**, direkt anschlussfähig an den bisherigen Text.
 
 ---
@@ -167,7 +167,7 @@ Beispiele:
 
 Header-Dateien enthalten **keinen Code**, sondern nur **Ankündigungen**.
 
-👉 *„Diese Funktion existiert irgendwo. Vertrau mir.“*
+*„Diese Funktion existiert irgendwo. Vertrau mir.“*
 
 Beispiel:
 
@@ -279,7 +279,7 @@ Ergebnis:
 clang -o fak main.o fak.o
 ```
 
-👉 **Der Linker** verbindet:
+**Der Linker** verbindet:
 
 * Funktionsaufrufe
 * Objektdateien
@@ -309,11 +309,11 @@ clang -Wall -std=c11 fak.c -lglib
 
 ## 10. Wichtig: Header ≠ Implementierung
 
-❌ **Falsch gedacht:**
+**Falsch gedacht:**
 
 > „Header werden kompiliert“
 
-✅ **Richtig:**
+**Richtig:**
 
 * Header enthalten **nur Deklarationen**
 * `.c`-Dateien enthalten **Code**
@@ -323,11 +323,11 @@ clang -Wall -std=c11 fak.c -lglib
 
 ## 11. Typische Anfängerfehler
 
-* ❌ Kein Header für externe Funktionen
-* ❌ Funktion benutzt, bevor sie deklariert ist
-* ❌ Header enthält Funktionsdefinitionen
-* ❌ `main()` rekursiv aufrufen (bitte nicht)
-* ❌ `#include` vergessen → kryptische Fehler
+* Kein Header für externe Funktionen
+* Funktion benutzt, bevor sie deklariert ist
+* Header enthält Funktionsdefinitionen
+* `main()` rekursiv aufrufen (bitte nicht)
+* `#include` vergessen → kryptische Fehler
 
 ---
 
@@ -342,7 +342,7 @@ clang -Wall -std=c11 fak.c -lglib
 * **Bibliotheken sparen Zeit und Nerven**
 
 ---
-Alles klar 👍
+Alles klar
 Hier ist **Aufgabe 1 (Fibonacci)** **im Beej’s-Guide-Stil**, sauber strukturiert, locker erklärt und **als Markdown**, genau wie gewünscht.
 
 ---
@@ -426,7 +426,7 @@ Warum funktioniert das?
 * Beide Dateien werden beim Kompilieren eingebunden
 * C weiß dadurch: *„Diese Funktion existiert.“*
 
-👉 Klassisches **Header + Implementierung**-Modell.
+Klassisches **Header + Implementierung**-Modell.
 
 ---
 
@@ -479,7 +479,7 @@ Warum das funktioniert:
 * **Rekursion**: Funktion ruft sich selbst auf
 * **Terminierung garantiert**
 
-Ohne Abbruchbedingung → 💥 Stack Overflow
+Ohne Abbruchbedingung → Stack Overflow
 
 ---
 
