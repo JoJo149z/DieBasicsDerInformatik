@@ -1,41 +1,6 @@
 import math
 import random
-import subprocess
-import shutil
-import pathlib
-import pytest
 import ctypes
-import sys
-
-def get_compiler() -> str:
-    for candidate in ["gcc", "clang", "cc"]:
-        if shutil.which(candidate):
-            return candidate
-    raise RuntimeError("No C compiler found")
-
-
-@pytest.fixture(scope="module")
-def clib(tmp_path_factory):
-    tmpdir = tmp_path_factory.mktemp("build")
-    src = pathlib.Path(__file__).parent / "solution.c"
-
-    # platform-specific shared library extension
-    if sys.platform.startswith("linux"):
-        libname = "solution.so"
-    elif sys.platform == "darwin":
-        libname = "solution.dylib"
-    else:
-        raise RuntimeError(f"Unsupported platform: {sys.platform}")
-
-    compiler = get_compiler()
-    libpath = tmpdir / libname
-
-    compile_cmd = [compiler, "-shared", "-fPIC", "-o", str(libpath), str(src), "-lm"]
-    subprocess.run(compile_cmd, check=True)
-
-    lib = ctypes.CDLL(str(libpath))
-
-    return lib
 
 def py_is_prime(n: int) -> bool:
     if n <= 1:
@@ -48,7 +13,8 @@ def py_is_prime(n: int) -> bool:
                 break
         return is_prime
 
-def test_is_prime(clib):
+def test_is_prime(shared_lib):
+    clib = shared_lib
     # ensure ctypes signature
     clib.isPrime.argtypes = [ctypes.c_int]
     clib.isPrime.restype = ctypes.c_bool

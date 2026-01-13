@@ -1,84 +1,38 @@
-import subprocess
-import shutil
 import pathlib
 import re
-import pytest
-import ctypes
-import sys
+import subprocess
 
+def manipulate_c(breite: int, hoehe: int) -> tuple[int, int]:
+    # Ordner des aktuellen Tests
+    test_dir = pathlib.Path(__file__).parent
+    src_path = test_dir / "solution.c"
 
-def get_compiler() -> str:
-    for candidate in ["gcc", "clang", "cc"]:
-        if shutil.which(candidate):
-            return candidate
-    raise RuntimeError("No C compiler found")
+    # C-Code lesen
+    code_text = src_path.read_text()
 
+    # alte Werte auslesen
+    breite_match = re.search(r"int\s+breite\s*=\s*(-?\d+)\s*;", code_text)
+    hoehe_match  = re.search(r"int\s+hoehe\s*=\s*(-?\d+)\s*;", code_text)
 
-@pytest.fixture(scope="module")
-def clib(tmp_path_factory):
-    tmpdir = tmp_path_factory.mktemp("build")
-    src = pathlib.Path(__file__).parent / "solution.c"
+    old_breite = int(breite_match.group(1)) if breite_match else 0
+    old_hoehe  = int(hoehe_match.group(1)) if hoehe_match else 0
 
-    # platform-specific shared library extension
-    if sys.platform.startswith("linux"):
-        libname = "solution.so"
-    elif sys.platform == "darwin":
-        libname = "solution.dylib"
-    else:
-        raise RuntimeError(f"Unsupported platform: {sys.platform}")
+    # Variablen ersetzen
+    code_text = re.sub(
+        r"int\s+breite\s*=\s*-?\d+\s*;",
+        f"int breite = {breite};",
+        code_text,
+    )
+    code_text = re.sub(
+        r"int\s+hoehe\s*=\s*-?\d+\s*;",
+        f"int hoehe = {hoehe};",
+        code_text,
+    )
 
-    compiler = get_compiler()
-    libpath = tmpdir / libname
+    # Datei überschreiben
+    src_path.write_text(code_text)
 
-    compile_cmd = [compiler, "", "-fPIC", "-o", str(libpath), str(src), "-lm"]
-    subprocess.run(compile_cmd, check=True)
-
-    lib = ctypes.CDLL(str(libpath))
-
-    return lib
-
-@pytest.fixture(scope="module")
-def compile_c_program_factory(tmp_path_factory):
-    tmpdir = tmp_path_factory.mktemp("build")
-    src = pathlib.Path(__file__).parent / "solution.c"
-
-    def _compile(breite: int, hoehe: int) -> str:
-        code = src.read_text()
-
-        code = re.sub(
-            r"int\s+breite\s*=\s*-?\d+\s*;",
-            f"int breite = {breite};",
-            code,
-        )
-        code = re.sub(
-            r"int\s+hoehe\s*=\s*-?\d+\s*;",
-            f"int hoehe = {hoehe};",
-            code,
-        )
-
-        temp_c_file = tmpdir / f"solution_{breite}_{hoehe}.c"
-        temp_c_file.write_text(code)
-
-        exe_path = tmpdir / f"solution_exec_{breite}_{hoehe}"
-
-        compiler = get_compiler()
-        compile_cmd = [
-            compiler,
-            "-Wall",
-            "-Wextra",
-            str(temp_c_file),
-            "-o",
-            str(exe_path),
-        ]
-
-        result = subprocess.run(compile_cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            pytest.fail(f"Compilation failed:\n{result.stderr}")
-
-        return str(exe_path)
-
-    return _compile
-
+    return old_breite, old_hoehe
 
 def py_draw_rect(breite: int, hoehe: int) -> str:
     rn = ""
@@ -95,33 +49,40 @@ def py_draw_rect(breite: int, hoehe: int) -> str:
         rn += "\n"
     return rn
 
-
-def test_negativ_size(compile_c_program_factory):
+def test_negativ_size(tmp_c_compile):
     breite = -1
     hoehe = -1
-    exe_path = compile_c_program_factory(breite, hoehe)
-    result = subprocess.run([exe_path], capture_output=True, text=True)
+    breite_old, hoehe_old = manipulate_c(breite,hoehe)
+    exe_path = tmp_c_compile
+    result = subprocess.run(str(exe_path), capture_output=True, text=True)
+    manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
-    assert py_draw_rect(breite, hoehe) in result.stdout
+    assert result.stdout == py_draw_rect(breite, hoehe)
 
-def test_null_size(compile_c_program_factory):
+def test_null_size(tmp_c_compile):
     breite = 7
     hoehe = 0
-    exe_path = compile_c_program_factory(breite, hoehe)
-    result = subprocess.run([exe_path], capture_output=True, text=True)
+    breite_old, hoehe_old = manipulate_c(breite,hoehe)
+    exe_path = tmp_c_compile
+    result = subprocess.run(str(exe_path), capture_output=True, text=True)
+    manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
-    assert result.stdout in py_draw_rect(breite, hoehe)
+    assert result.stdout == py_draw_rect(breite, hoehe)
     breite = 0
     hoehe = 7
-    exe_path = compile_c_program_factory(breite, hoehe)
-    result = subprocess.run([exe_path], capture_output=True, text=True)
+    breite_old, hoehe_old = manipulate_c(breite,hoehe)
+    exe_path = tmp_c_compile
+    result = subprocess.run(str(exe_path), capture_output=True, text=True)
+    manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
-    assert py_draw_rect(breite, hoehe) in result.stdout
+    assert result.stdout == py_draw_rect(breite, hoehe)
 
-def test_normal_size(compile_c_program_factory):
+def test_normal_size(tmp_c_compile):
     breite = 3
     hoehe = 8
-    exe_path = compile_c_program_factory(breite, hoehe)
-    result = subprocess.run([exe_path], capture_output=True, text=True)
+    breite_old, hoehe_old = manipulate_c(breite,hoehe)
+    exe_path = tmp_c_compile
+    result = subprocess.run(str(exe_path), capture_output=True, text=True)
+    manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
-    assert py_draw_rect(breite, hoehe) in result.stdout
+    assert result.stdout == py_draw_rect(breite, hoehe)
