@@ -59,7 +59,7 @@ def test_negativ_size(tmp_c_compile):
     assert result.returncode == 0
     assert result.stdout == py_draw_rect(breite, hoehe)
 
-def test_null_size(tmp_c_compile):
+def test_null_size_hoehe(tmp_c_compile):
     breite = 7
     hoehe = 0
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
@@ -68,6 +68,8 @@ def test_null_size(tmp_c_compile):
     manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
     assert result.stdout == py_draw_rect(breite, hoehe)
+
+def test_null_size_breite(tmp_c_compile):
     breite = 0
     hoehe = 7
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
