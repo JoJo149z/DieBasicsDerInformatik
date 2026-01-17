@@ -53,7 +53,7 @@ def test_negativ_size(tmp_c_compile):
     breite = -1
     hoehe = -1
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
-    exe_path = tmp_c_compile
+    exe_path = tmp_c_compile()
     result = subprocess.run(str(exe_path), capture_output=True, text=True)
     manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
@@ -63,7 +63,7 @@ def test_null_size_hoehe(tmp_c_compile):
     breite = 7
     hoehe = 0
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
-    exe_path = tmp_c_compile
+    exe_path = tmp_c_compile()
     result = subprocess.run(str(exe_path), capture_output=True, text=True)
     manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
@@ -73,7 +73,7 @@ def test_null_size_breite(tmp_c_compile):
     breite = 0
     hoehe = 7
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
-    exe_path = tmp_c_compile
+    exe_path = tmp_c_compile()
     result = subprocess.run(str(exe_path), capture_output=True, text=True)
     manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0
@@ -83,7 +83,7 @@ def test_normal_size(tmp_c_compile):
     breite = 3
     hoehe = 8
     breite_old, hoehe_old = manipulate_c(breite,hoehe)
-    exe_path = tmp_c_compile
+    exe_path = tmp_c_compile()
     result = subprocess.run(str(exe_path), capture_output=True, text=True)
     manipulate_c(breite_old,hoehe_old)
     assert result.returncode == 0

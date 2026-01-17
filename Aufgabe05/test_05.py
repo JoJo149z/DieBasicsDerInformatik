@@ -39,7 +39,7 @@ def manipulate_c(array:list[int]) -> list[int]:
     return old_array
 
 def py_print_array(array: list[int]) -> str:
-    return (
+    return str(
         f"Array: {', '.join(map(str, array))}\n"
         f"Minimum: {min(array)}\n"
         f"Maximum: {max(array)}\n"
@@ -51,7 +51,7 @@ def test_100_arrays(tmp_c_compile):
     for _ in range(100):
         array = [random.randint(-1000, -1) for _ in range(random.randint(1, 20))]
         old_array = manipulate_c(array)
-        exe_path = tmp_c_compile
+        exe_path = tmp_c_compile()
         result = (subprocess.run(str(exe_path), capture_output=True, text=True))
         manipulate_c(old_array)
         assert result.returncode == 0

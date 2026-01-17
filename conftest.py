@@ -2,6 +2,9 @@ import ctypes
 import pathlib
 import shutil
 import subprocess
+from pathlib import Path
+from typing import Callable
+
 import pytest
 import sys
 
@@ -39,24 +42,26 @@ def shared_lib(tmp_path_factory, request) -> ctypes.CDLL:
     return ctypes.CDLL(str(libpath))
 
 
-@pytest.fixture(scope="function")
-def tmp_c_compile(tmp_path_factory, request) -> pathlib.Path:
+@pytest.fixture
+def tmp_c_compile(tmp_path_factory, request):
+    def compile_now() -> pathlib.Path:
+        test_dir = pathlib.Path(request.node.fspath).parent
+        c_files = list(test_dir.glob("*.c"))
 
-    test_dir = pathlib.Path(request.node.fspath).parent
-    c_files = list(test_dir.glob("*.c"))
+        libpath = tmp_path_factory.mktemp("build") / "solution"
 
-    libpath = tmp_path_factory.mktemp("build") / "solution"
+        compile_cmd = [
+            get_c_compiler(),
+            "-Wall",
+            "-o",
+            str(libpath),
+            *map(str, c_files),
+        ]
+        subprocess.run(compile_cmd, check=True)
 
-    compile_cmd = [
-        get_c_compiler(),
-        "-Wall",
-        "-o",
-        str(libpath),
-    ] + [str(f) for f in c_files]
-    subprocess.run(compile_cmd, check=True)
+        if not sys.platform.startswith("win"):
+            libpath.chmod(libpath.stat().st_mode | 0o111)
 
-    # Unix: ausführbar machen
-    if not sys.platform.startswith("win"):
-        libpath.chmod(libpath.stat().st_mode | 0o111)
+        return libpath
 
-    return libpath
+    return compile_now
