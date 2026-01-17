@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 int main() {
-    int breite = 6;
-    int hoehe = 3; 
+    int breite = -1;
+    int hoehe = -1; 
 
     int ih = hoehe;
-    
+    if (breite >= 0 || hoehe >= 0){
     for(int ib = breite+2; ib != 0; ib--){
         printf("A");
     }
@@ -28,7 +28,7 @@ int main() {
     }
     printf("\n");
 
-    
+    }    
 
     // Hier Code einfügen
 
