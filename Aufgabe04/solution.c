@@ -3,6 +3,12 @@
 #include "input.h" // Hier binden wir die Bibliothek ein
 
 // Schreibe hier die Funktion "int fibonacci"
+double fibonacci(int n) {
+    if (n <= 1) {
+        return 1;
+    } 
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
 
 int main(){
     int n = lese_int(); // Hier rufen wir die Funktion lese_int auf.
