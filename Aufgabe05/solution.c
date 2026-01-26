@@ -55,6 +55,6 @@ int main () {
     printf("Maximum: %d\n", max(array, len));
     summe(array, len, &s);
     printf("Sum: %d\n", s);
-    // Gebe hier nacheinander das Minimum , Maximum und die Summe
-    // aus. Trenne die Werte durch einen einzelnen Zeilenumbruch .
+    // Gebe hier nacheinander das Minimum, Maximum und die Summe
+    // aus. Trenne die Werte durch einen einzelnen Zeilenumbruch.
 }
