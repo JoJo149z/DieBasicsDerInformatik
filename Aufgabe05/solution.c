@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-void print_array (int array [], int len) {
+void print_array (const int array [], const int len) {
     // HIER Code einfügen
     printf("Array: ");
     for (int i = 0; i < len; i++) {
@@ -14,7 +13,7 @@ void print_array (int array [], int len) {
 }
 
 
-void summe(int array[], int len, int *s) {
+void summe(const int array[], const int len, int *s) {
     int summe = array[0];
     for (int i = 1; i < len; i++){ 
         summe += array[i];
@@ -23,7 +22,7 @@ void summe(int array[], int len, int *s) {
     *s = summe;
 }
 
-int min(int array[], int len){
+int min(const int array[], const int len){
     int min = array[0];
     for (int i = 1; i < len; i++) {
         if (array[i]< min) {
@@ -34,7 +33,7 @@ int min(int array[], int len){
     return min;
 }
 
-int max(int array[], int len){
+int max(const int array[], const int len){
     int max = array[0];
     for (int i = 1; i < len; i++) {
         if (array[i]> max) {
@@ -47,8 +46,8 @@ int max(int array[], int len){
 // Schreibe die Funktion "sum", "min" und "max"
 
 int main () {
-    int array[] = {9, 4, 7, 8, 10, 5, 1, 6, 3, 2};
-    int len = 10;
+    const int array[] = {9, 4, 7, 8, 10, 5, 1, 6, 3, 2};
+    const int len = 10;
     int s;
     print_array (array , len);
     printf("Minimum: %d\n", min(array, len));
